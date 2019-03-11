@@ -1,0 +1,24 @@
+#:kivy 1.4
+<Network@Screen>:
+    name: 'network'
+    GridLayout:
+        id: network
+        spacing:10
+        pos: 228,280
+        size_hint: 0.25, 0.4
+        orientation: 'vertical'
+        cols: 1
+        Button:
+            text: "NETWORK SETTINGS"
+            background_color: .7, .7, 1, 1
+            font_size: 20
+        ToggleButton:
+            text: "Inputs"
+            group: "setting"
+        ToggleButton:
+            text: "Outpus"
+            group: "setting"
+        ToggleButton:
+            text: "Groups"
+            group: "setting"
+        Widget:

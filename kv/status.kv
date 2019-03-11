@@ -1,0 +1,24 @@
+#:kivy 1.4
+<Status@Screen>:
+    name: 'status'
+    GridLayout:
+        id: status
+        spacing:10
+        pos: 228,280
+        size_hint: 0.2, 0.4
+        orientation: 'vertical'
+        cols: 1
+        Button:
+            text: "STATUS SHOW"
+            background_color: .7, .7, 1, 1
+            font_size: 18
+        ToggleButton:
+            text: "Inputs"
+            group: "setting"
+        ToggleButton:
+            text: "Outpus"
+            group: "setting"
+        ToggleButton:
+            text: "Groups"
+            group: "setting"
+        Widget:

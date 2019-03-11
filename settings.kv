@@ -1,0 +1,157 @@
+#:kivy 1.4
+#:import KivyLexer kivy.extras.highlight.KivyLexer
+#:include kv/backcolor.kv
+#:include kv/audio.kv
+#:include kv/video.kv
+#:include kv/network.kv
+#:include kv/status.kv
+<MyBCommon@Button>:
+    size_hint: None, 1
+    width: '108sp'
+    background_color: (0, 0, 0, 0)
+
+<MySCommon@StackLayout>
+    pos: self.parent.pos
+    size: self.parent.size
+    orientation: 'lr-tb'
+
+<MyTBCommon@ToggleButton>
+    size_hint: 1,None
+    height: '70sp'
+    pos_hint: {'x': 0}
+    group: "item"
+    background_color: (0.2, 0.5, 0.7, .5)
+
+<Catalog>:
+    id:catalog_root
+    orientation: 'vertical'
+    spacing: 15
+    BoxLayout:
+        canvas:
+            Color:
+                rgba: 0, 0.47, 0.67, 1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        size_hint: 1, None
+        height: '48sp'
+        Spinner:
+            size_hint: None, 1
+            width: '130sp'
+            background_color: (0, 0, 0, 0)
+            MySCommon:
+                Image:
+                    source: 'imgs/setting.png'
+                    size_hint_x: None
+                    width: 48
+                    allow_stretch: True
+                Label:
+                    size_hint_x: None                                                                                                                                                                     
+                    width: 82
+                    font_size: '18sp'
+                    text: 'SETTINGS'
+        Widget:
+        MyBCommon:
+            MySCommon:
+                Image:
+                    source: 'imgs/move.png'
+                    size_hint_x: None
+                    width: 48
+                    allow_stretch: True
+                Label:
+                    size_hint_x: None                                                                                                                                                                     
+                    width: 60
+                    font_size: '18sp'
+                    text: 'MOVE'
+        MyBCommon:
+            MySCommon:
+                Image:
+                    source: 'imgs/select.png'
+                    size_hint_x: None
+                    width: 48
+                    allow_stretch: True
+                Label:
+                    size_hint_x: None                                                                                                                                                                     
+                    width: 60
+                    font_size: '18sp'
+                    text: 'SELECT'
+        MyBCommon:
+            MySCommon:
+                Image:
+                    source: 'imgs/exit.png'
+                    size_hint_x: None
+                    width: 48
+                    allow_stretch: True
+                Label:
+                    size_hint_x: None                                                                                                                                                                     
+                    width: 60
+                    font_size: '18sp'
+                    text: 'EXIT'
+
+    BoxLayout:
+        id: set_item
+        size_hint: None, 1
+        width: '188sp'
+        orientation: 'vertical'
+        spacing: 15
+        canvas:         
+            Color:      
+                rgb: 0, 0, 0
+            Rectangle:  
+                size: (self.width*1.2, self.height)
+                pos: self.pos
+
+        MyTBCommon:
+            id: audio
+            on_press: root.setting_items("audio")
+            MySCommon:
+                Image:
+                    source: 'imgs/audio.png'
+                    size_hint_x: None
+                    width: 74
+                    allow_stretch: True
+                Label:
+                    size_hint_x: None                                                                                                                                                                     
+                    width: 80
+                    font_size: '24sp'
+                    text: "Audio"
+        MyTBCommon:
+            on_press: root.setting_items("video")
+            MySCommon:
+                Image:
+                    source: 'imgs/video.png'
+                    size_hint_x: None
+                    width: 74
+                    allow_stretch: True
+                Label:
+                    size_hint_x: None                                                                                                                                                                     
+                    width: 80
+                    font_size: '24sp'
+                    text: "VIDEO"
+        MyTBCommon:
+            on_press: root.setting_items("network")
+            MySCommon:
+                Image:
+                    source: 'imgs/network.png'
+                    size_hint_x: None
+                    width: 60
+                    allow_stretch: True
+                Label:
+                    size_hint_x: None                                                                                                                                                                     
+                    width: 80
+                    font_size: '24sp'
+                    text: "NETWORK"
+        MyTBCommon:
+            on_press: root.setting_items("status")
+            MySCommon:
+                Image:
+                    source: 'imgs/status.png'
+                    size_hint_x: None
+                    width: 74
+                    allow_stretch: True
+                Label:
+                    size_hint_x: None                                                                                                                                                                     
+                    width: 80
+                    font_size: '24sp'
+                    text: "STATUS"
+        Widget:
