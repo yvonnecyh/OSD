@@ -1,23 +1,12 @@
 '''
-Kivy Catalog
+Kivy OsdModule
 ============
 
-The Kivy Catalog viewer showcases widgets available in Kivy
-and allows interactive editing of kivy language code to get immediate
-feedback. You should see a two panel screen with a menu spinner button
-(starting with 'Welcome') and other controls across the top.The left pane
-contains kivy (.kv) code, and the right side is that code rendered. You can
-edit the left pane, though changes will be lost when you use the menu
-spinner button. The catalog will show you dozens of .kv examples controlling
-different widgets and layouts.
+THis is the Kivy Osd Module.It offers Osd interface for video/audio/network/status
+checking and setting.
+The subitems for video/audio/network/status are descriped in seperate kv files
+under kv dir. While the image thumbnails are under img dir
 
-The catalog's interface is set in the file kivycatalog.kv, while the
-interfaces for each menu option are set in containers_kvs directory. To
-add a new .kv file to the Kivy Catalog, add a .kv file into the container_kvs
-directory and reference that file in the ScreenManager section of
-kivycatalog.kv.
-
-Known bugs include some issue with the drop
 '''
 import kivy
 kivy.require('1.4.2')
@@ -32,33 +21,17 @@ from kivy.uix.codeinput import CodeInput
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.uix.screenmanager import Screen, ScreenManager
+import dbus
+from traceback import print_exc
 
-class Catalog(BoxLayout):
-    '''Catalog of widgets. This is the root widget of the app. It contains
-    a tabbed pain of widgets that can be displayed and a textbox where .kv
-    language files for widgets being demoed can be edited.
-
-    The entire interface for the Catalog is defined in kivycatalog.kv,
-    although individual containers are defined in the container_kvs
-    directory.
-
-    To add a container to the catalog,
-    first create the .kv file in container_kvs
-    The name of the file (sans .kv) will be the name of the widget available
-    inside the kivycatalog.kv
-    Finally modify kivycatalog.kv to add an AccordionItem
-    to hold the new widget.
-    Follow the examples in kivycatalog.kv to ensure the item
-    has an appropriate id and the class has been referenced.
-
-    You do not need to edit any python code, just .kv language files!
+class Osdmain(BoxLayout):
+    '''Catalog of widgets. This is the root widget of the app.
     '''
-
     def __init__(self, **kwargs):
         self._previously_parsed_text = ''
-        super(Catalog, self).__init__(**kwargs)
+        super(Osdmain, self).__init__(**kwargs)
         self.carousel = None
-
+    '''Manager screen button for sub-items'''
     def setting_items(self,value):
         print ('step to',value,'setting items:')
         app = App.get_running_app()
@@ -69,25 +42,80 @@ class Catalog(BoxLayout):
         app.tmpsmwidget.current = value
         print ('3',app.tmpsmwidget.current)
         self.parent.add_widget(app.tmpsmwidget) 
-    
+    '''Dbus exception'''    
+    def Dbus_exp():
+        print_exc()
+        sys.exit(1)
+    '''set audio input '''    
     def set_audio_inputs(self):
-        print ('step to',value,'setting items:')
-        app = App.get_running_app()
+        print ('step to set items:')
+
+        audioin_reply_list = SettingsApp.remote_object.Set_audio_params("set param from setting.py!",
+            dbus_interface = "com.example.AudioInterface")
+
+        print (audioin_reply_list)
+    
+    def get_audio_outputs(self):
+        print ('step to get items:')
+
+        audioin_reply_list = SettingsApp.remote_object.Get_audio_params("get param from setting.py!",
+            dbus_interface = "com.example.AudioInterface")
+
+        print (audioin_reply_list)
+    
+    def get_audio_status(self):
+        print ('step to get audio status:')
+
+        audioin_reply_list = SettingsApp.remote_object.Get_Status("get status from setting.py!",
+            dbus_interface = "com.example.AudioInterface")
+
+        print (audioin_reply_list)
+    
+    def set_video_inputs(self):
+        print ('step to set video inputs:')
+
+        videoin_reply_list = SettingsApp.remote_object.Set_video_params("set param from setting.py!",
+            dbus_interface = "com.example.VideoInterface")
+
+        print (videoin_reply_list)
+    
+    def get_video_outputs(self):
+        print ('step to set video outputs:')
+
+        videoin_reply_list = SettingsApp.remote_object.Get_video_params("set param from setting.py!",
+            dbus_interface = "com.example.VideoInterface")
+
+        print (videoin_reply_list)
 
 class SettingsApp(App):
     '''The kivy App that runs the main root. All we do is build a catalog
     widget into the root.'''
-    tmpsmwidget = ScreenManager();  
+    tmpsmwidget = ScreenManager();
+    
+    bus = dbus.SessionBus()
+    try:
+        remote_object = bus.get_object("com.example.OSDService",
+                                   "/OsdObject")
+    except dbus.DBusException:
+            Osdmain.Dbus_exp()
+    
     def build(self):
-        return Catalog()
+        return Osdmain()
 
     def on_pause(self):
         return True
     
     def set_audio_inputs(self):
-        print ('step to setting items:')
-        app = App.get_running_app()
-
+        Osdmain.set_audio_inputs(self)
+    
+    def get_audio_outputs(self):
+        Osdmain.get_audio_outputs(self)
+    
+    def set_video_inputs(self):
+        Osdmain.set_video_inputs(self)
+    
+    def get_video_outputs(self):
+        Osdmain.get_video_outputs(self)
 
 
 if __name__ == "__main__":
