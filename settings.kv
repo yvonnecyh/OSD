@@ -26,6 +26,11 @@
     id:Osdmain_root
     orientation: 'vertical'
     spacing: 15
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "images/osm-background.png"
     BoxLayout:
         canvas:
             Color:
@@ -94,12 +99,6 @@
         width: '188sp'
         orientation: 'vertical'
         spacing: 15
-        canvas:         
-            Color:      
-                rgb: 0, 0, 0
-            Rectangle:  
-                size: (self.width*1.2, self.height)
-                pos: self.pos
 
         MyTBCommon:
             id: audio
